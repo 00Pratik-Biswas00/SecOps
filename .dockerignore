@@ -1,0 +1,38 @@
+.env
+.env.*
+.venv
+.pytest_cache
+.ruff_cache
+__pycache__
+*.pyc
+
+tests/
+pytest.ini
+requirements-dev.txt
+
+# Demo/testing scripts
+demo.py
+gemini_agent.py
+generate_token.py
+load_schema.py
+verify_db.py
+
+# Database setup files (already loaded to Cloud SQL)
+*.sql
+database/reset.sql
+
+# Documentation and logs
+docs/
+*.md
+!README.md
+logs.txt
+proj-info.txt
+*.sh
+
+# Build files
+docker-compose.yml
+cloudbuild.yaml
+run_uat.ps1
+.gitattributes
+.git
+.gitignore
