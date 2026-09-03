@@ -1,0 +1,56 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line too long — black handles this
+    "B008",  # do not perform function calls in default arguments (FastAPI Depends pattern)
+    "SIM108", # ternary operator — readability preference
+]
+
+[tool.ruff.lint.per-file-ignores]
+# dev-only scripts: load_dotenv() must run before app imports, so E402 is intentional
+"demo.py"           = ["E402"]
+"gemini_agent.py"   = ["E402"]
+"generate_token.py" = ["E402"]
+# tests: unused imports in fixtures are fine, assert style is idiomatic pytest
+"tests/*"           = ["F401", "S101"]
+# SQLAlchemy ORM models: forward-reference strings in Mapped[] are intentional
+"app/models/*.py"   = ["F821"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+# SQLAlchemy ORM forward-refs in TYPE_CHECKING blocks are intentional
+disable_error_code = ["name-defined"]
+warn_unused_ignores = false
+no_error_summary = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::jwt.warnings.InsecureKeyLengthWarning",
+]
+
+[tool.bandit]
+skips = ["B104"]   # 0.0.0.0 bind is intentional — controlled by APP_HOST env var
